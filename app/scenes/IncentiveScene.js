@@ -5,27 +5,77 @@ import {
   StyleSheet,
   Title,
   Text,
+  TouchableHighlight,
   View
 } from 'react-native';
 
 export default class IncentiveScene extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      amount: 0
+    }
+  }
+
+  _onPressBack() {
+    this.props.navigator.pop();
+  }
+
+  _onPressNext() {
+    // go to congrats splash
+  }
+
+
   render() {
-    return null;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Set an Incentive</Text>
+
+
+        <TouchableHighlight
+          style={styles.bottomLeftCorner}
+          onPress={this._onPressBack.bind(this)}
+          activeOpacity={2}
+           >
+          <Text>Back</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={styles.bottomRightCorner}
+          onPress={this._onPressNext.bind(this)}
+          activeOpacity={2}
+           >
+          <Text>Next</Text>
+        </TouchableHighlight>
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
-    flex: 1,
-    justifyContent: 'center'
+    paddingTop: 20,
+    fontSize: 40
   },
-
+  bottomLeftCorner: {
+    position: 'absolute',
+    padding: 10,
+    borderRadius: 3,
+    bottom: 30,
+    left: 30
+  },
   bottomRightCorner: {
     position: 'absolute',
-    bottom: 0,
-    right: 0
+    padding: 10,
+    borderRadius: 3,
+    bottom: 30,
+    right: 30
   }
 })

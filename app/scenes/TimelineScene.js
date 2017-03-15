@@ -9,7 +9,6 @@ import {
   View
 } from 'react-native';
 
-
 export default class TimelineScene extends Component {
 
   constructor(props) {
@@ -36,7 +35,6 @@ export default class TimelineScene extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Set a Timeline</Text>
-
 
         <TouchableHighlight
           style={styles.bottomLeftCorner}
