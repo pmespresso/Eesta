@@ -1,4 +1,4 @@
-
+'use strict';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -9,14 +9,29 @@ import {
   View
 } from 'react-native';
 
+import DatePicker from 'react-native-datepicker';
+
+class Heading extends Component {
+  render() {
+    return (
+      <View style={styles.headingContainer}>
+        <Text style={styles.heading}>
+          {this.props.label}
+        </Text>
+      </View>
+    );
+  }
+}
+
 export default class TimelineScene extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      start: Date.now(),
-      end: ''
+      start: new Date(),
+      end: new Date(),
+      timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 6
     }
   }
 
@@ -30,12 +45,30 @@ export default class TimelineScene extends Component {
     })
   }
 
+  _onDateChange(date) {
+    this.setState({
+      end: date
+    })
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Set a Timeline</Text>
 
+        <Heading style={styles.subTitle} label="Do This Till..." />
+        <DatePicker
+            style={styles.datePicker}
+            date={this.state.date}
+            mode="date"
+            placeholder="select date"
+            format="YYYY-MM-DD"
+            minDate={this.state.start}
+            maxDate="2020-06-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            onDateChange={(date) => {this.setState({date: date})}}
+          />
         <TouchableHighlight
           style={styles.bottomLeftCorner}
           onPress={this._onPressBack.bind(this)}
@@ -65,6 +98,15 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: 20,
     fontSize: 40
+  },
+  subTitle: {
+    padding: 10,
+    margin: 10,
+    fontSize: 22
+  },
+  datePicker: {
+    padding: 10,
+    width: 500
   },
   bottomLeftCorner: {
     position: 'absolute',
