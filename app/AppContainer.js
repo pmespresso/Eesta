@@ -10,11 +10,25 @@ import HomeScene from './scenes/HomeScene';
 import GoalScene from './scenes/GoalScene';
 import TimelineScene from './scenes/TimelineScene';
 import IncentiveScene from './scenes/IncentiveScene';
+import LoginScene from './scenes/LoginScene';
+import SignUpScene from './scenes/SignUpScene';
+import AuthStore from './stores/AuthStore';
+import SettingsStore from './stores/SettingsStore';
+
+const settings = new SettingsStore(); // must comes first, as this is where firebase is initialized
+const auth = new AuthStore();
 
 export default class AppContainer extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      store: {
+        settings: settings,
+        auth: auth
+      }
+    }
   }
 
   _configureScene(route, routeStack) {
@@ -23,14 +37,20 @@ export default class AppContainer extends Component {
 
   _renderScene(route, navigator) {
     switch (route.title) {
+      case 'LoginScene':
+        return (<LoginScene {...route.passProps} navigator={navigator} />);
+        break;
+      case 'SignUpScene':
+        return (<SignUpScene {...route.passProps} navigator={navigator} />);
+        break;
       case 'GoalScene':
-        return (<GoalScene navigator={navigator} />);
+        return (<GoalScene {...route.passProps} navigator={navigator} />);
         break;
       case 'TimelineScene':
-        return (<TimelineScene navigator={navigator} />);
+        return (<TimelineScene {...route.passProps} navigator={navigator} />);
         break;
       case 'IncentiveScene':
-        return (<IncentiveScene navigator={navigator} />);
+        return (<IncentiveScene {...route.passProps} navigator={navigator} />);
         break;
       default:
         null;
@@ -38,18 +58,17 @@ export default class AppContainer extends Component {
   }
 
   render() {
-    const routes = [
-      { title: 'GoalScene', index: 0 },
-      { title: 'TimelineScene', index: 1 },
-      { title: 'IncentiveScene', index: 2 }
-    ];
 
     return (
       <Navigator
         style={{ flex: 1 }}
         ref={(ref) => this._navigator = ref}
-        initialRoute={ routes[0] }
-        initialRouteStack={ routes }
+        initialRoute={ {title: 'SignUpScene',
+                        index: 0,
+                        passProps: {
+                          store: this.state.store
+                        }}
+                      }
         renderScene={ this._renderScene.bind(this) }
         configureScene={ this._configureScene.bind(this) }
       />
