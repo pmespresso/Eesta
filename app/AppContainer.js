@@ -63,7 +63,7 @@ export default class AppContainer extends Component {
       <Navigator
         style={{ flex: 1 }}
         ref={(ref) => this._navigator = ref}
-        initialRoute={ {title: 'SignUpScene',
+        initialRoute={ {title: 'LoginScene',
                         index: 0,
                         passProps: {
                           store: this.state.store
