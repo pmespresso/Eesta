@@ -1,7 +1,6 @@
 
 import { observable, action } from 'mobx';
 import * as firebase from 'firebase';
-import firebaseui from 'firebaseui';
 
 export default class AuthStore {
   @observable authUser = null;
@@ -23,17 +22,12 @@ export default class AuthStore {
   }
 
   @action
-  async signIn({email, password}) {
-    if(this.authUser) {
-      return Promise.resolve(this.authUser);
-    } else {
-      try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-      } catch (error) {
-        return Promise.reject(error.message);
-      }
+  async logIn({email, password}) {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      return Promise.reject(error.message);
     }
-
   }
 
   @action

@@ -11,36 +11,57 @@ import {
 import { observer } from 'mobx-react/native';
 
 @observer
-export default class LoginScene extends Component {
+export default class SignUpScene extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
   }
 
   _handleChangeEmail(email) {this.setState({email: email})}
   _handleChangePassword(password) {this.setState({password: password})}
-
-  _onPressSubmit() {
-    const { auth } = this.props.store;
-    const { email, password } = this.state;
-
-    auth.signIn({ email, password }).then((promise) => {
-      this.props.navigator.push({
-        title: "GoalScene",
-        passProps: this.props
-      })
+  _toggleError(error) {
+    this.setState({
+      error: error
     })
   }
 
-  _toSignUpPage() {
-    this.props.navigator.replace({
-      title: "SignUpScene",
-      passProps: this.props
-    })
+  _onPressLogin() {
+    const { auth } = this.props.store;
+    const { email, password } = this.state;
+
+    const _this = this;
+    auth.logIn({ email, password })
+      .then((promise) => {
+        this.props.navigator.push({
+          title: "GoalScene",
+          passProps: this.props
+        })
+      })
+      .catch((error) => {
+        _this._toggleError(error);
+      })
+  }
+
+  _onPressSignup() {
+    const { auth } = this.props.store;
+    const { email, password } = this.state;
+
+    const _this = this;
+    auth.signUp({ email, password })
+      .then((promise) => {
+        this.props.navigator.push({
+          title: "GoalScene",
+          passProps: this.props
+        })
+      })
+      .catch((error) => {
+        _this._toggleError(error);
+      })
   }
 
   render() {
@@ -51,7 +72,7 @@ export default class LoginScene extends Component {
         {this.renderPasswordField()}
         {this.renderError()}
         <View style={styles.buttonAlign}>
-          {this.renderSignInButton()}
+          {this.renderLoginButton()}
           {this.renderSignUpButton()}
         </View>
       </View>
@@ -62,7 +83,7 @@ export default class LoginScene extends Component {
     return (
         <TouchableHighlight
           style={styles.signup}
-          onPress={this._toSignUpPage.bind(this)}
+          onPress={this._onPressSignup.bind(this)}
           underlayColor='#3943B7'>
           <Text>
             Sign Up
@@ -71,18 +92,16 @@ export default class LoginScene extends Component {
     );
   }
 
-  renderSignInButton() {
+  renderLoginButton() {
     return (
-      <TouchableHighlight
-        style={styles.signin}
-        onPress={this._onPressSubmit.bind(this)}
-        activeOpacity={2}
-         >
-        <Text
-          style={styles.signin}>
-          Login In
-        </Text>
-      </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.login}
+          onPress={this._onPressLogin.bind(this)}
+          underlayColor='#3943B7'>
+          <Text>
+            Log in
+          </Text>
+        </TouchableHighlight>
     );
   }
 
@@ -100,36 +119,35 @@ export default class LoginScene extends Component {
     );
   }
 
+  renderEmailField() {
+    return (
+      <TextInput
+        style={styles.email}
+        placeholder="Email"
+        onChangeText={this._handleChangeEmail.bind(this)}
+       />
+    );
+  }
 
-    renderEmailField() {
+  renderPasswordField() {
+    return (
+      <TextInput
+        style={styles.password}
+        secureTextEntry={true}
+        placeholder="Password"
+        onChangeText={this._handleChangePassword.bind(this)}
+       />
+    );
+  }
+
+  renderHeader() {
       return (
-        <TextInput
-          style={styles.email}
-          placeholder="Email"
-          onChangeText={this._handleChangeEmail.bind(this)}
-         />
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.title}>EESTA</Text>
+          <Text style={styles.subtitle}>Incentive to be Disciplined.</Text>
+        </View>
       );
-    }
-
-    renderPasswordField() {
-      return (
-        <TextInput
-          style={styles.password}
-          secureTextEntry={true}
-          placeholder="Password"
-          onChangeText={this._handleChangePassword.bind(this)}
-         />
-      );
-    }
-
-    renderHeader() {
-        return (
-          <View style={{alignItems: 'center'}}>
-            <Text style={styles.title}>EESTA</Text>
-            <Text style={styles.subtitle}>Incentive to be Disciplined.</Text>
-          </View>
-        );
-    }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -180,13 +198,18 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 16
+    alignItems: 'center'
   },
-  signin: {
-    height: 18,
+  login: {
+    height: 40,
     width: 100,
-    marginBottom: 30
+    backgroundColor: '#3943B7',
+    paddingTop: 7.5,
+    paddingTop: 7.5,
+    paddingLeft: 16,
+    paddingRight: 16,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   error: {
     color: 'red',

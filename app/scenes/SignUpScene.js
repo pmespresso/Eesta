@@ -17,41 +17,29 @@ export default class SignUpScene extends Component {
 
     this.state = {
       email: '',
-      password: '',
-      error: null
+      password: ''
     }
   }
 
   _handleChangeEmail(email) {this.setState({email: email})}
   _handleChangePassword(password) {this.setState({password: password})}
 
-  _toggleError(error) {
-    (this.state.error !== true)
-    ?
-    this.setState({error:true})
-    :
-    null
-  }
-
   _onPressSubmit() {
     const { auth } = this.props.store;
     const { email, password } = this.state;
 
-    const _this = this;
-    auth.signUp({ email, password })
+    auth.login({ email, password })
     .then((promise) => {
       this.props.navigator.push({
         title: "GoalScene",
         passProps: this.props
       })
-    }).catch((error) => {
-      _this._toggleError(error);
     })
   }
 
-  _toSignInPage() {
+  _toSignUpPage() {
     this.props.navigator.replace({
-      title: "LoginScene",
+      title: "SignUpScene",
       passProps: this.props
     })
   }
@@ -63,55 +51,38 @@ export default class SignUpScene extends Component {
         {this.renderEmailField()}
         {this.renderPasswordField()}
         {this.renderError()}
-        {this.renderSignUpButton()}
-        {this.renderSignInOption()}
+        <View style={styles.buttonAlign}>
+          {this.renderLoginButton()}
+          {this.renderSignUpButton()}
+        </View>
       </View>
     );
   }
 
-  renderEmailField() {
-    return (
-      <TextInput
-        style={styles.email}
-        placeholder="Email"
-        onChangeText={this._handleChangeEmail.bind(this)}
-       />
-    )
-  }
-
-  renderPasswordField() {
-    return (
-      <TextInput
-        style={styles.password}
-        secureTextEntry={true}
-        placeholder="Password"
-        onChangeText={this._handleChangePassword.bind(this)}
-       />
-    )
-  }
-
-  renderHeader() {
-      return (
-        <View style={{alignItems: 'center'}}>
-          <Text style={styles.title}>EESTA</Text>
-          <Text style={styles.subtitle}>Incentive to be Disciplined.</Text>
-        </View>
-      )
-  }
-
   renderSignUpButton() {
     return (
-      <TouchableHighlight
-        style={styles.button}
-        onPress={this._onPressSubmit.bind(this)}
-        activeOpacity={2}
-         >
-        <Text
-          style={styles.signup}>
-          Sign Up
-        </Text>
-      </TouchableHighlight>
-    )
+        <TouchableHighlight
+          style={styles.signup}
+          onPress={this._toSignUpPage.bind(this)}
+          underlayColor='#3943B7'>
+          <Text>
+            Sign Up
+          </Text>
+        </TouchableHighlight>
+    );
+  }
+
+  renderLoginButton() {
+    return (
+        <TouchableHighlight
+          style={styles.login}
+          onPress={this._onPressSubmit.bind(this)}
+          underlayColor='#3943B7'>
+          <Text>
+            Log in
+          </Text>
+        </TouchableHighlight>
+    );
   }
 
   renderError() {
@@ -125,24 +96,37 @@ export default class SignUpScene extends Component {
           null
         }
       </View>
-    )
+    );
   }
 
-  renderSignInOption() {
+  renderEmailField() {
     return (
-      <View>
-        <Text>Already a member?
-        <TouchableHighlight
-          style={styles.signin}
-          onPress={this._toSignInPage.bind(this)}
-          underlayColor='#BDF7B7'>
-          <Text style={styles.signin}>
-            Sign in.
-          </Text>
-        </TouchableHighlight>
-        </Text>
-      </View>
-    )
+      <TextInput
+        style={styles.email}
+        placeholder="Email"
+        onChangeText={this._handleChangeEmail.bind(this)}
+       />
+    );
+  }
+
+  renderPasswordField() {
+    return (
+      <TextInput
+        style={styles.password}
+        secureTextEntry={true}
+        placeholder="Password"
+        onChangeText={this._handleChangePassword.bind(this)}
+       />
+    );
+  }
+
+  renderHeader() {
+      return (
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.title}>EESTA</Text>
+          <Text style={styles.subtitle}>Incentive to be Disciplined.</Text>
+        </View>
+      );
   }
 }
 
@@ -189,22 +173,32 @@ const styles = StyleSheet.create({
     height: 40,
     width: 100,
     backgroundColor: '#4CAF50',
-    color: 'white',
     paddingTop: 7.5,
     paddingTop: 7.5,
     paddingLeft: 16,
     paddingRight: 16,
     justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 16
+    alignItems: 'center'
   },
-  signin: {
-    height: 18,
+  login: {
+    height: 40,
     width: 100,
-    marginBottom: 30
+    backgroundColor: '#3943B7',
+    paddingTop: 7.5,
+    paddingTop: 7.5,
+    paddingLeft: 16,
+    paddingRight: 16,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   error: {
     color: 'red',
     fontSize: 20
+  },
+  buttonAlign: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch'
   }
 })
