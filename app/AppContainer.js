@@ -11,6 +11,7 @@ import GoalScene from './scenes/GoalScene';
 import TimelineScene from './scenes/TimelineScene';
 import IncentiveScene from './scenes/IncentiveScene';
 import LoginScene from './scenes/LoginScene';
+
 import AuthStore from './stores/AuthStore';
 import SettingsStore from './stores/SettingsStore';
 
@@ -59,7 +60,7 @@ export default class AppContainer extends Component {
       <Navigator
         style={{ flex: 1 }}
         ref={(ref) => this._navigator = ref}
-        initialRoute={ {title: 'GoalScene',
+        initialRoute={ {title: 'LoginScene',
                         index: 0,
                         passProps: {
                           store: this.state.store

@@ -28,7 +28,8 @@ export default class GoalScene extends Component {
 
   _onPressNext() {
     this.props.navigator.push({
-      title: 'TimelineScene'
+      title: 'TimelineScene',
+      passProps: this.props
     })
   }
 
@@ -57,12 +58,12 @@ export default class GoalScene extends Component {
   }
 
   renderHeader() {
-      return (
-        <View style={styles.headerBackground}>
-          <Text style={styles.title}>Set a Goal</Text>
-          <Text style={styles.subtitle}>Make it measurable and achievable.</Text>
-        </View>
-      );
+    return (
+      <View style={styles.headerBackground}>
+        <Text style={styles.title}>Set a Goal</Text>
+        <Text style={styles.subtitle}>Make it measurable and achievable.</Text>
+      </View>
+    );
   }
 
 }

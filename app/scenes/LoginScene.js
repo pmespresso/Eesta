@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TextInput,
   Text,
+  Image,
   TouchableHighlight,
   View
 } from 'react-native';
@@ -11,7 +12,7 @@ import {
 import { observer } from 'mobx-react/native';
 
 @observer
-export default class SignUpScene extends Component {
+export default class LoginScene extends Component {
   constructor(props) {
     super(props);
 
@@ -65,16 +66,19 @@ export default class SignUpScene extends Component {
   }
 
   render() {
+    const { store } = this.props;
     return (
       <View style={styles.container}>
-        {this.renderHeader()}
-        {this.renderEmailField()}
-        {this.renderPasswordField()}
-        {this.renderError()}
-        <View style={styles.buttonAlign}>
-          {this.renderLoginButton()}
-          {this.renderSignUpButton()}
-        </View>
+        <Image style={styles.stretch} source={store.settings.loginBG}>
+          {this.renderHeader()}
+          {this.renderEmailField()}
+          {this.renderPasswordField()}
+          {this.renderError()}
+          <View style={styles.buttonAlign}>
+            {this.renderLoginButton()}
+            {this.renderSignUpButton()}
+          </View>
+        </Image>
       </View>
     );
   }
@@ -153,26 +157,45 @@ export default class SignUpScene extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
   title: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 40
+    paddingTop: 20,
+    marginTop: 40,
+    fontSize: 40,
+    color: 'white'
   },
   subtitle: {
     paddingTop: 5,
     paddingBottom: 5,
-    marginBottom: 300,
+    marginBottom: 170,
     fontSize: 18,
     fontStyle: 'italic',
-    fontWeight: '100'
+    fontWeight: '100',
+    color: 'white'
+  },
+  headerBackground: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(72, 72, 72, 0.6)',
+    marginBottom: 100,
+    height: 200,
+    width: 300,
+    marginTop: 40,
+    borderRadius: 4
+  },
+  stretch: {
+    height: 700,
+    width: 400,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   email: {
     borderRadius: 1,
     borderWidth: 2,
     borderColor: '#f2f2f2',
+    backgroundColor: 'white',
     height: 60,
     marginLeft: 20,
     marginRight: 20,
@@ -183,6 +206,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     borderWidth: 2,
     borderColor: '#f2f2f2',
+    backgroundColor: 'white',
     height: 60,
     marginLeft: 20,
     marginRight: 20,

@@ -17,8 +17,9 @@ export default class SettingsStore extends MobxFirebaseStore {
     super(firebase.database().ref());
     this.splashTime = 1000;
     this.splashImg = require('../../images/splash.jpg');
-    this.loginBG = require('../../images/login.jpg');
+    this.loginBG = require('../../images/login.jpeg');
     this.goalHero = require('../../images/books.jpeg');
+    this.timeHero = require('../../images/time.jpeg');
   }
 
   get SplashTime() {
@@ -35,5 +36,9 @@ export default class SettingsStore extends MobxFirebaseStore {
 
   get GoalHero() {
     return this.goalHero;
+  }
+
+  get TimeHero() {
+    return this.timeHero;
   }
 }
