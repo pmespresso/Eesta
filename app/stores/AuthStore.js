@@ -1,7 +1,6 @@
 
 import { observable, action } from 'mobx';
 import * as firebase from 'firebase';
-import firebaseui from 'firebaseui';
 
 export default class AuthStore {
   @observable authUser = null;
