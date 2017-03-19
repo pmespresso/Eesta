@@ -40,6 +40,9 @@ export default class AppContainer extends Component {
       case 'LoginScene':
         return (<LoginScene {...route.passProps} navigator={navigator} />);
         break;
+      case 'HomeScene':
+        return (<HomeScene {...route.passProps} navigator={navigator} />);
+        break;
       case 'GoalScene':
         return (<GoalScene {...route.passProps} navigator={navigator} />);
         break;
@@ -60,7 +63,7 @@ export default class AppContainer extends Component {
       <Navigator
         style={{ flex: 1 }}
         ref={(ref) => this._navigator = ref}
-        initialRoute={ {title: 'LoginScene',
+        initialRoute={ {title: 'HomeScene',
                         index: 0,
                         passProps: {
                           store: this.state.store

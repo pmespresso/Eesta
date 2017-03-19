@@ -75,8 +75,8 @@ export default class LoginScene extends Component {
           {this.renderPasswordField()}
           {this.renderError()}
           <View style={styles.buttonAlign}>
-            {this.renderLoginButton()}
             {this.renderSignUpButton()}
+            {this.renderLoginButton()}
           </View>
         </Image>
       </View>
@@ -88,8 +88,8 @@ export default class LoginScene extends Component {
         <TouchableHighlight
           style={styles.signup}
           onPress={this._onPressSignup.bind(this)}
-          underlayColor='#3943B7'>
-          <Text>
+          underlayColor='#fff'>
+          <Text style={{color: 'white'}}>
             Sign Up
           </Text>
         </TouchableHighlight>
@@ -101,8 +101,8 @@ export default class LoginScene extends Component {
         <TouchableHighlight
           style={styles.login}
           onPress={this._onPressLogin.bind(this)}
-          underlayColor='#3943B7'>
-          <Text>
+          underlayColor='#fff'>
+          <Text style={{color: 'white'}}>
             Log in
           </Text>
         </TouchableHighlight>
@@ -216,22 +216,28 @@ const styles = StyleSheet.create({
   signup: {
     height: 40,
     width: 100,
-    backgroundColor: '#4CAF50',
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: 'white',
     paddingTop: 7.5,
-    paddingTop: 7.5,
+    paddingBottom: 7.5,
     paddingLeft: 16,
     paddingRight: 16,
+    marginRight: 60,
     justifyContent: 'center',
     alignItems: 'center'
   },
   login: {
     height: 40,
     width: 100,
-    backgroundColor: '#3943B7',
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: 'white',
     paddingTop: 7.5,
-    paddingTop: 7.5,
+    paddingBottom: 7.5,
     paddingLeft: 16,
     paddingRight: 16,
+    marginLeft: 60,
     justifyContent: 'center',
     alignItems: 'center'
   },
