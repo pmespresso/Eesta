@@ -11,7 +11,6 @@ import GoalScene from './scenes/GoalScene';
 import TimelineScene from './scenes/TimelineScene';
 import IncentiveScene from './scenes/IncentiveScene';
 import LoginScene from './scenes/LoginScene';
-import SignUpScene from './scenes/SignUpScene';
 import AuthStore from './stores/AuthStore';
 import SettingsStore from './stores/SettingsStore';
 
@@ -40,9 +39,6 @@ export default class AppContainer extends Component {
       case 'LoginScene':
         return (<LoginScene {...route.passProps} navigator={navigator} />);
         break;
-      case 'SignUpScene':
-        return (<SignUpScene {...route.passProps} navigator={navigator} />);
-        break;
       case 'GoalScene':
         return (<GoalScene {...route.passProps} navigator={navigator} />);
         break;
@@ -63,7 +59,7 @@ export default class AppContainer extends Component {
       <Navigator
         style={{ flex: 1 }}
         ref={(ref) => this._navigator = ref}
-        initialRoute={ {title: 'LoginScene',
+        initialRoute={ {title: 'GoalScene',
                         index: 0,
                         passProps: {
                           store: this.state.store
