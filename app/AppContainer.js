@@ -7,13 +7,12 @@ import {
 } from 'react-native';
 
 import HomeScene from './scenes/HomeScene';
-import GoalScene from './scenes/GoalScene';
-import TimelineScene from './scenes/TimelineScene';
-import IncentiveScene from './scenes/IncentiveScene';
+import CreateNew from './scenes/CreateNew';
 import LoginScene from './scenes/LoginScene';
 
 import AuthStore from './stores/AuthStore';
 import SettingsStore from './stores/SettingsStore';
+import GoalsStore from './stores/GoalsStore';
 
 const settings = new SettingsStore(); // must comes first, as this is where firebase is initialized
 const auth = new AuthStore();
@@ -43,14 +42,8 @@ export default class AppContainer extends Component {
       case 'HomeScene':
         return (<HomeScene {...route.passProps} navigator={navigator} />);
         break;
-      case 'GoalScene':
-        return (<GoalScene {...route.passProps} navigator={navigator} />);
-        break;
-      case 'TimelineScene':
-        return (<TimelineScene {...route.passProps} navigator={navigator} />);
-        break;
-      case 'IncentiveScene':
-        return (<IncentiveScene {...route.passProps} navigator={navigator} />);
+      case 'CreateNew':
+        return (<CreateNew {...route.passProps} navigator={navigator} />);
         break;
       default:
         null;

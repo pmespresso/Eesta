@@ -4,9 +4,12 @@ import {
   AppRegistry,
   ListView,
   StyleSheet,
+  TouchableHighlight,
   Text,
   View
 } from 'react-native';
+
+import * as firebase from 'firebase';
 
 import GoalListItem from '../components/GoalListItem';
 
@@ -15,7 +18,6 @@ export default class HomeScene extends Component {
     super(props);
 
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
 
     let dummyData = [
       {
@@ -43,6 +45,17 @@ export default class HomeScene extends Component {
     };
   }
 
+  componentDidMount() {
+    // get data
+  }
+
+  _onCreateNew() {
+    this.props.navigator.push({
+      title: 'CreateNew',
+      passProps: this.props
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -51,6 +64,14 @@ export default class HomeScene extends Component {
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <GoalListItem rowData={rowData} />} />
+
+          <TouchableHighlight
+            onPress={this._onCreateNew.bind(this)}
+            style={styles.add}
+            >
+            <Text>Add</Text>
+          </TouchableHighlight>
+
       </View>
     );
   }
@@ -65,5 +86,13 @@ const styles = StyleSheet.create({
   title: {
     margin: 20,
     fontSize: 36
+  },
+  add: {
+    width: 300,
+    height: 70,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'green'
   }
 })
