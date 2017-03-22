@@ -10,6 +10,9 @@ import {
   View
 } from 'react-native';
 
+import firebase from 'firebase';
+import { observer,inject } from 'mobx-react/native';
+
 import _ from 'lodash';
 
 import SetGoal from '../components/SetGoal';
@@ -18,6 +21,9 @@ import SetTimeline from '../components/SetTimeline';
 import SetIncentive from '../components/SetIncentive';
 import FinalCheck from '../components/FinalCheck';
 
+import { firebaseApp } from '.././firebase';
+
+@inject("goalStore") @observer
 export default class CreateNew extends Component {
 
   constructor(props) {
@@ -54,19 +60,49 @@ export default class CreateNew extends Component {
     this.setState({postIncentive: amount});
   }
 
-  // _updateChoice(ref) {
-  //   let newState = {...this.state.incentives};
-  //
-  //   _.forOwn(newState, (value, key) => {
-  //     newState[value] = !key
-  //   });
-  //
-  //   this.setState(newState);
-  //   this.setState({postIncentive: })
-  // }
-
   _submit() {
+
+    const { auth } = this.props.store;
     // post to firebase here
+    let db = firebaseApp.database();
+
+    const uid = auth.authUser.uid;
+    const newPostKey = db.ref('/posts').push().key;
+
+    const postData = {
+        // username: username,
+        uid: uid,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        updatedAt: firebase.database.ServerValue.TIMESTAMP,
+        status: "available",
+        clientId: "",
+        clientName: "",
+        title: this.state.postTitle,
+        start: this.state.postStart,
+        end: this.state.postEnd,
+        incentive: this.state.postIncentive,
+        puid: newPostKey,
+      }
+
+
+      let updates = {}
+      this.props.goalStore.post_count = this.props.goalStore.post_count + 1;
+      updates['/users/' + uid + '/post_count'] = this.props.goalStore.post_count;
+      updates['/posts/' + newPostKey] = postData;
+      updates['/user_posts/' + uid + '/posts/' + newPostKey] = postData;
+      db.ref().update(updates)
+      .then(() => {
+        this.setState({
+                        postTitle: '',
+                        postIncentive: '',
+                        postStart: '',
+                        postEnd: ''
+                      })
+      })
+      .catch((error) => {
+        this.setState({ postStatus: 'Something went wrong!!!' });
+        this.setState({ spinnervisible: false });
+      })
   }
 
   render() {
