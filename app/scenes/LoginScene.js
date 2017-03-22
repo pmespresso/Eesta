@@ -43,7 +43,7 @@ export default class LoginScene extends Component {
     })
     .then(() => {
       this.props.navigator.push({
-        title: "CreateNew",
+        title: "HomeScene",
         passProps: this.props
       })
     })
@@ -60,7 +60,7 @@ export default class LoginScene extends Component {
     auth.signUp({ email, password })
       .then((promise) => {
         this.props.navigator.push({
-          title: "CreateNew",
+          title: "HomeScene",
           passProps: this.props
         })
       })

@@ -64,13 +64,13 @@ export default class CreateNew extends Component {
 
     const { auth } = this.props.store;
     // post to firebase here
-    let db = firebaseApp.database();
 
+    const username = auth.authUser;
     const uid = auth.authUser.uid;
-    const newPostKey = db.ref('/posts').push().key;
+    const newPostKey = firebaseApp.database().ref('/posts').push().key;
 
     const postData = {
-        // username: username,
+        username: username,
         uid: uid,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         updatedAt: firebase.database.ServerValue.TIMESTAMP,
@@ -85,21 +85,35 @@ export default class CreateNew extends Component {
       }
 
 
-      let updates = {}
+      let updates = {};
       this.props.goalStore.post_count = this.props.goalStore.post_count + 1;
       updates['/users/' + uid + '/post_count'] = this.props.goalStore.post_count;
       updates['/posts/' + newPostKey] = postData;
       updates['/user_posts/' + uid + '/posts/' + newPostKey] = postData;
-      db.ref().update(updates)
+
+      // important
+      let cleanedUpdates = JSON.parse( JSON.stringify(updates) );
+
+      firebaseApp.database().ref().update(cleanedUpdates)
       .then(() => {
         this.setState({
+                        step: 0,
                         postTitle: '',
-                        postIncentive: '',
                         postStart: '',
-                        postEnd: ''
+                        postEnd: '',
+                        postIncentive: '',
+                        spinnerVisible: false,
+                        postStatus: null
                       })
       })
+      .then(() => {
+        this.props.navigator.push({
+          title: 'HomeScene',
+          passProps: this.props
+        })
+      })
       .catch((error) => {
+        console.log("Error updating data: ", error);
         this.setState({ postStatus: 'Something went wrong!!!' });
         this.setState({ spinnervisible: false });
       })
