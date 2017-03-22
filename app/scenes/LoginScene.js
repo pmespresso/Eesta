@@ -9,9 +9,10 @@ import {
   View
 } from 'react-native';
 
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
+import firebaseApp from '.././firebase';
 
-@observer
+@inject("goalStore") @observer
 export default class LoginScene extends Component {
   constructor(props) {
     super(props);
@@ -37,15 +38,18 @@ export default class LoginScene extends Component {
 
     const _this = this;
     auth.logIn({ email, password })
-      .then((promise) => {
-        this.props.navigator.push({
-          title: "GoalScene",
-          passProps: this.props
-        })
+    .then((user) => {
+      this.props.goalStore.user = user;
+    })
+    .then(() => {
+      this.props.navigator.push({
+        title: "CreateNew",
+        passProps: this.props
       })
-      .catch((error) => {
-        _this._toggleError(error);
-      })
+    })
+    .catch((error) => {
+      _this._toggleError(error);
+    })
   }
 
   _onPressSignup() {
@@ -56,7 +60,7 @@ export default class LoginScene extends Component {
     auth.signUp({ email, password })
       .then((promise) => {
         this.props.navigator.push({
-          title: "GoalScene",
+          title: "CreateNew",
           passProps: this.props
         })
       })
